@@ -1,28 +1,28 @@
-//* third party module
 const express = require('express');
 
 const app = express();
 
-//* middleware
-app.use((req, res, next) => {
-   console.log('In the middleware!');
-   
-   //* to pass the request to the next middleware
-   next();
+app.use('/add-product', (req, res, next) => {
+   console.log('In the second middleware!');
+   res.send('<h1>Hello from add product page!</h1>');
 });
 
-//* middleware
-app.use((req, res, next) => {
+app.use('/payment', (req, res, next) => {
    console.log('In the second middleware!');
+   res.send('<h1>Hello from payment page!</h1>');
+});
 
-   //* we can also override a header
-   // res.setHeader('Content-Type', 'text/html');
+//* default path for all routes
+app.use('/', (req, res, next) => {
+   console.log('In the second middleware!');
    res.send('<h1>Hello from Express!</h1>');
 });
 
-//* old way of creating server
-// const server = http.createServer(app);
-// server.listen(3000);
+//* won't be reached because of the previous middleware
+app.use('/azmy', (req, res, next) => {
+   console.log('In the second middleware!');
+   res.send('<h1>Hello from azmy page!</h1>');
+});
 
 app.listen(3000);
 
