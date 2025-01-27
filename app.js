@@ -7,11 +7,11 @@ const shopRouter = require('./routes/shop');
 
 app.use(bodyParser.urlencoded({extended: false}));
 
-app.use(adminRouter);
+//* in case the paths are common in part of the path we can filter this common part
+app.use('/admin', adminRouter);
 app.use(shopRouter);
 
 app.use((req, res, next) => {
-   // res.statusCode = 404;
    res.status(404).send('<h1>404 Page not found</h1>');
 });
 
