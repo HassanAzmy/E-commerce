@@ -3,11 +3,11 @@ const path = require('path');
 const rootDir = require('../utility/path');
 
 const router = express.Router();
+const adminData = require('./admin');
+const { log } = require('console');
 
 router.get('/', (req, res, next) => {
-   //* "/" is the root path in our OS (D:\views\shop.html)
-   //NOTE: __dirname gives the absolute path of the current file 
-   //NOTE: which make our path independent of the OS. It will work on both windows and linux for example
+   console.log('Products List ', adminData.products); 
    res.sendFile(path.join(rootDir, 'views', 'shop.html'));
 });
 
