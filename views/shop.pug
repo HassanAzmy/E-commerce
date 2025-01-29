@@ -4,7 +4,7 @@ html(lang="en")
       meta(charset="UTF-8")
       meta(name="viewport", content="width=device-width, initial-scale=1.0")
       meta(http-equiv="X-UA-Compatible", content="ie=edge")
-      title Document
+      title #{pageTitle}
       link(rel="stylesheet", href="/css/main.css")
       link(rel="stylesheet", href="/css/product.css")
 
@@ -16,3 +16,21 @@ html(lang="en")
                   a.active(href="/") Shop
                li.main-header__item
                   a(href="/admin/add-product") Add Product
+   main  
+      if prods.length > 0
+         div.grid
+            each product in prods
+               article.card.product-item
+                  header.card__header 
+                     h1.product__title product.title
+                  div.card__image 
+                     img(src="https://bookdesigners.com/img/paths/img/containers/assets/blog/Screen-Shot-2021-07-27-at-12.54.01-PM.png/bf638307fb959aeed561fba39126b5ef.png/0301c24109115a432480cddf67d840ea.png", alt="A Book") 
+                  div.card__content 
+                     h2.product__price $19.99
+                     p.product__description A very interesting book about so many even more interesting things!
+                  div.card__actions 
+                     button.btn Add to Cart
+      else  
+         h1 No Products Found.
+
+         
