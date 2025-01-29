@@ -7,12 +7,11 @@ const shopRouter = require('./routes/shop');
 
 const app = express();
 
+app.set('view engine', 'pug');
+app.set('views', 'views');
 app.use(bodyParser.urlencoded({extended: false}));
-
-//* we can use the middleware to serve static files
 app.use(express.static(path.join(__dirname, 'public')));
 
-//* in case the paths are common in part of the path we can filter this common part
 app.use('/admin', adminData.routes);
 app.use(shopRouter);
 

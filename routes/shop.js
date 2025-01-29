@@ -7,8 +7,11 @@ const adminData = require('./admin');
 const { log } = require('console');
 
 router.get('/', (req, res, next) => {
-   console.log('Products List ', adminData.products); 
-   res.sendFile(path.join(rootDir, 'views', 'shop.html'));
+   // console.log('Products List ', adminData.products); 
+   // res.sendFile(path.join(rootDir, 'views', 'shop.html'));
+   
+   //* it uses the default view engine that we set in app.js
+   res.render('shop');
 });
 
 module.exports = router;
