@@ -9,7 +9,7 @@ const products = [];
 router.get('/add-product', (req, res, next) => {
    // res.sendFile(path.join(rootDir, 'views', 'add-product.html'));
 
-   res.render('add-product', {pageTitle: 'Adding Products'});
+   res.render('add-product', {pageTitle: 'Adding Products', path:'/admin/add-product'});
 });
 
 //* we can use the same path for different methods (get and post)
