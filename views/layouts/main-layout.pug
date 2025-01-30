@@ -1,3 +1,8 @@
+- 
+   const links = [
+      {title: 'Shop', url: '/'},
+      {title: 'Add Product', url: '/admin/add-product'}]
+
 doctype html
 html(lang="en")
    head
@@ -11,8 +16,12 @@ html(lang="en")
       header.main-header 
          nav.main-header__nav 
             ul.main-header__item-list 
-               li.main-header__item                   
-                  a(href="/", class = (path === '/' ? 'active' : '')) Shop
-               li.main-header__item 
-                  a(href="/admin/add-product", class = (path === '/admin/add-product' ? 'active' : '')) Add Product      
+               each link in links   
+                  li.main-header__item                   
+                     a(href=link.url, class = {'active' : url === link.url}) #{link.title}
+
+               //- li.main-header__item                   
+               //-    a(href="/", class = (path === '/' ? 'active' : '')) Shop
+               //- li.main-header__item 
+               //-    a(href="/admin/add-product", class = (path === '/admin/add-product' ? 'active' : '')) Add Product      
       block content
