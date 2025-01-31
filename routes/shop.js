@@ -9,7 +9,13 @@ const { log } = require('console');
 router.get('/', (req, res, next) => {
    const products = adminData.products;
    
-   res.render('shop', {prods: products, pageTitle: 'Shop', hasProducts: products.length > 0});
+   res.render('shop', {
+      prods: products, 
+      pageTitle: 'Shop', 
+      hasProducts: products.length > 0,
+      shopActive: true,
+      productCSS: true
+   });
 });
 
 module.exports = router;

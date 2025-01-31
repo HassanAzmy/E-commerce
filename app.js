@@ -8,8 +8,12 @@ const shopRouter = require('./routes/shop');
 
 const app = express();
 
-app.engine('hbs', handlebars.engine(
-   {defaultLayout: false,}
+//* hbs is the file extension for handlebars files except the main layout file
+app.engine('hbs', handlebars.engine({
+      defaultLayout: 'main-layout',
+      layoutsDir: 'views/layouts/',
+      extname: 'hbs' //* this extension is applied only to the layout file
+   }
 ));
 app.set('view engine', 'hbs');
 app.set('views', 'views');
