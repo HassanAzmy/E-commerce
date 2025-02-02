@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 
-const adminData = require('./routes/admin');
+const adminRouter = require('./routes/admin');
 const shopRouter = require('./routes/shop');
 
 const app = express();
@@ -18,7 +18,7 @@ app.use((req, res, next) => {
    next();
 })
 
-app.use('/admin', adminData.routes);
+app.use('/admin', adminRouter);
 app.use(shopRouter);
 
 app.use((req, res, next) => {
