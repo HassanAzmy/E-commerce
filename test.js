@@ -15,3 +15,6 @@ function inner2() {
    console.log(this);
 }
 outer2(inner, { name: 'hassan' });     // hassan object
+
+const arr = [];
+console.log(arr);
