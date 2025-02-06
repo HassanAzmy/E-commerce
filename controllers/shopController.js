@@ -1,4 +1,5 @@
 const Product = require('../models/ProductModel');
+const Cart = require('../models/cartModel');
 
 exports.getCart = (req, res, next) => {
    const products = Product.fetchAll(products => {
@@ -10,8 +11,15 @@ exports.getCart = (req, res, next) => {
 
 exports.postCart = (req, res, next) => {
    const prodId = req.body.productId;
-   console.log(prodId);
+   Product.fetchProductById(prodId, product => {
+      Cart.addProduct(prodId, product.price)
+   });
    res.redirect('/cart');
+
+   //* OR we can send the price as a hidden field
+   // const prodPrice = req.body.productPrice;
+   // Cart.addProduct(prodId, prodPrice);
+   // res.redirect('/cart');
 }
 
 exports.getCheckout = (req, res, next) => {
