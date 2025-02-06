@@ -157,6 +157,10 @@ form {
     margin: 0;
 }
 
+.centered {
+    text-align: center;
+}
+
 .card__image {
     width: 100%;
 }

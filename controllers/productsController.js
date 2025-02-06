@@ -14,7 +14,8 @@ exports.getProduct = (req, res, next) => {
    Product.fetchProductById(productId, product => {
       res.render('shop/product-details', {
          product,
-         pageTitle: 'Product Details'
+         pageTitle: 'Product Details',
+         url: '/products'
       });
    });
 };

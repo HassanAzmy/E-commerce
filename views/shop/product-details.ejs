@@ -8,34 +8,15 @@
 
 <body>
    <%- include('../includes/navBar.ejs') %>
-      <main>
-         <% if(product !== null) { %>
-            <!-- <div class="grid">                -->
-                  <!-- <article class="card product-item">
-                     <header class="card__header"> -->
-                        <h1 class="product__title">
-                           <%=product.title%>
-                        </h1>
-                     <!-- </header> -->
-                     <!-- <div class="card__image">
-                        <img src="<%=product.imageUrl%>" alt="A Book">
-                     </div>
-                     <div class="card__content"> -->
-                        <h2 class="product__price">
-                           $<%=product.price%>
-                        </h2>
-                        <p class="product__description">
-                           <%=product.description%>
-                        </p>
-                     <!-- </div> -->
-                     <!-- <div class="card__actions">
-                        <a href="/product-details/<%=product.Id%>" class="btn">Details</a>
-                        <form action="/add-to-cart" method="post">
-                           <button class="btn">Add to Cart</button>
-                        </form>
-                     </div> -->
-                  <!-- </article> -->
-            <!-- </div> -->
+      <main class="centered">
+         <% if(product !== null) { %>            
+            <h1><%=product.title%></h1>
+            <hr>
+            <div>
+               <img src="<%=product.imageUrl%>" alt="<%=product.title%>">
+            </div>
+            <h2>$<%=product.price%></h2>
+            <p><%=product.description%></p>                     
          <% } else { %>
             <h1>No Such a Product!</h1>
          <% } %>
