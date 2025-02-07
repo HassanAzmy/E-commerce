@@ -1,8 +1,20 @@
 const Product = require('../models/ProductModel');
 
 exports.getAddProduct = (req, res, next) => {
-   res.render('admin/add-product', {
-      pageTitle: 'Adding Products'
+   res.render('admin/edit-product', {
+      pageTitle: 'Add Product',
+      url: '/admin/add-product'
+   });
+};
+
+exports.getEditProduct = (req, res, next) => {
+   const editMode = req.query.edit;
+   if(!editMode) {
+      return res.redirect('/');
+   }
+   res.render('admin/edit-product', {
+      pageTitle: 'Edit Product',
+      editing: editMode
    });
 };
 
