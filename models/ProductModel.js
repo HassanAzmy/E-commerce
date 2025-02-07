@@ -25,7 +25,8 @@ module.exports = class Product {
       getProductsFromFile(products => {
          products.push(this);
          fs.writeFile(p, JSON.stringify(products), err => {
-            console.log(err);
+            if(err)
+               console.log(err);
          });
       });      
    }
@@ -38,6 +39,17 @@ module.exports = class Product {
       getProductsFromFile(products => {
          const product = products.find(p => p.Id === Id);
          callback(product);
+      });
+   }
+
+   static edit(Id, newProduct) {
+      getProductsFromFile(products => {
+         const productIndex = products.findIndex(p => p.Id === Id);
+         products[productIndex] = newProduct;
+         fs.writeFile(p, JSON.stringify(products), err => {
+            if(err)
+               console.log(err);            
+         })
       });
    }
 }
