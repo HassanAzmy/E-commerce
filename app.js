@@ -5,11 +5,14 @@ const path = require('path');
 const adminRouter = require('./routes/admin');
 const shopRouter = require('./routes/shop');
 const errorController = require('./controllers/errorController');
+const db = require('./utility/database');
 
 const app = express();
 
 app.set('view engine', 'ejs');
 app.set('views', 'views');
+
+db.execute('SELECT * FROM products')
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static(path.join(__dirname, 'public')));
