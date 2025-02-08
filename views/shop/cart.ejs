@@ -7,6 +7,21 @@
 
 <body>
    <%- include('../includes/navBar') %>
+   <main>
+      <%if(cartProducts.length) {%>
+         <%cartProducts.forEach(product => {%>
+            <li>
+               <%=product.productData.title%> (<%=product.quantity%>)
+            </li>
+         <%})%>
+         <p>
+            Total price: $<%=totalPrice%>
+         </p>
+      <%} else {%>
+         <h1>No products in the cart yet.</h1>
+      <%}%>
+      
+   </main>
 </body>
 
 </html>

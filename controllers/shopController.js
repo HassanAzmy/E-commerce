@@ -2,10 +2,24 @@ const Product = require('../models/ProductModel');
 const Cart = require('../models/cartModel');
 
 exports.getCart = (req, res, next) => {
-   Product.fetchAll(products => {
-      res.render('shop/cart', {
-         pageTitle: 'Cart'
-      });
+   Cart.fetchAll(cart => {
+      Product.fetchAll(products => {
+         const cartProducts = [];
+         for (let product of products) {
+            const cartProduct = cart.products.find(p => p.Id === product.Id);
+            if (cartProduct) {
+               cartProducts.push({
+                  productData: product,
+                  quantity: cartProduct.quantity
+               });
+            }
+         }
+         res.render('shop/cart', {
+            cartProducts,
+            totalPrice: cart.totalPrice,
+            pageTitle: 'Cart'
+         });
+      })
    });
 };
 
