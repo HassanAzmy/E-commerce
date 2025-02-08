@@ -62,7 +62,7 @@ module.exports = class Product {
          
          fs.writeFile(p, JSON.stringify(products), err => {
             if (!err) {
-               Cart.deleteById(Id, price);
+               Cart.deleteNonExistentProduct(Id, price);
             }
          });
       });

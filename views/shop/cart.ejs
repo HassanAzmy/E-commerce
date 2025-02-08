@@ -10,9 +10,15 @@
    <main>
       <%if(cartProducts.length) {%>
          <%cartProducts.forEach(product => {%>
-            <li>
-               <%=product.productData.title%> (<%=product.quantity%>)
-            </li>
+            <p>
+               <li>
+                  <%=product.productData.title%> (<%=product.quantity%>)               
+                  <form action="/delete-from-cart" method="post">
+                     <button class="btn">Delete</button>
+                     <input type="hidden" name="productId" value="<%=product.productData.Id%>">
+                  </form>
+               </li>
+            </p>
          <%})%>
          <p>
             Total price: $<%=totalPrice%>

@@ -1,7 +1,7 @@
 const Product = require('../models/ProductModel');
 const Cart = require('../models/cartModel');
 
-exports.getCart = (req, res, next) => {
+exports.getCartProducts = (req, res, next) => {
    Cart.fetchAll(cart => {
       Product.fetchAll(products => {
          const cartProducts = [];
@@ -23,7 +23,7 @@ exports.getCart = (req, res, next) => {
    });
 };
 
-exports.postCart = (req, res, next) => {
+exports.postAddToCart = (req, res, next) => {
    const prodId = req.body.productId;
    Product.fetchProductById(prodId, product => {
       Cart.addProduct(prodId, product.title, product.price)
@@ -34,6 +34,14 @@ exports.postCart = (req, res, next) => {
    // const prodPrice = req.body.productPrice;
    // Cart.addProduct(prodId, prodPrice);
    // res.redirect('/cart');
+}
+
+exports.postDeletFromCart = (req, res) => {
+   const prodId = req.body.productId;
+   Product.fetchProductById(prodId, product => {
+      Cart.deleteFromCart(prodId, product.price);
+      res.redirect('/cart');
+   })
 }
 
 exports.getCheckout = (req, res, next) => {
