@@ -1,4 +1,11 @@
 const Product = require('../models/ProductModel');
+const express = require('express');
+
+/**
+ * @param {express.Request} req
+ * @param {express.Response} res
+ * @param {express.NextFunction} next
+ */
 
 exports.getAddProduct = (req, res, next) => {
    res.render('admin/edit-product', {
@@ -20,7 +27,7 @@ exports.getEditProduct = (req, res, next) => {
       });
    })
    .catch(err => {
-      console.log(err);      
+      console.log(err);
    });
 };
 
@@ -47,14 +54,14 @@ exports.postAddProduct = (req, res, next) => {
    const imageUrl = body.imageUrl;
    const price = body.price;
    const description = body.description;
-   const product = new Product(title, imageUrl, price, description);
-   product.save()
-      .then( () => {
-         res.redirect('/admin/products');
-      })
-      .catch(err => {
-         console.log(err);         
-      });
+   Product.create({
+      title,
+      imageUrl,
+      price,
+      description
+   })
+      .then(result => console.log(result))
+      .catch(err => console.log(err));
 };
 
 exports.postDeleteProduct = (req, res, next) => {
