@@ -13,26 +13,19 @@ exports.getProducts = (req, res, next) => {
 
 exports.getProductDetails = (req, res, next) => {
    const productId = req.params.productId;
-   Product.fetchProductById(productId)
-      .then(([product]) => {
+   //* Product.findAll({where : {id: productId}}) also can be used but it will returns an array
+   Product.findByPk(productId)
+      .then(product => {
          console.log(product);
          res.render('shop/product-details', {
-            product: product[0],
-            pageTitle: 'Product Details',
+            product,
+            pageTitle: product.title,
             url: '/products'
          });
       })
       .catch(err => {
          console.log(err);
       });
-
-   // Product.fetchProductById(productId, product => {
-   //    res.render('shop/product-details', {
-   //       product,
-   //       pageTitle: 'Product Details',
-   //       url: '/products'
-   //    });
-   // });
 };
 
 exports.getIndex = (req, res, next) => {
