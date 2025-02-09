@@ -2,60 +2,57 @@ const Product = require('../models/ProductModel');
 const Cart = require('../models/cartModel');
 
 exports.getCartProducts = (req, res, next) => {
-   Cart.fetchAll(cart => {
-      Product.fetchAll(products => {
-         const cartProducts = [];
-         for (let product of products) {
-            const cartProduct = cart.products.find(p => p.Id === product.Id);
-            if (cartProduct) {
-               cartProducts.push({
-                  productData: product,
-                  quantity: cartProduct.quantity
-               });
-            }
-         }
+   Cart.fetchAll()
+      .then(([cart]) => {
          res.render('shop/cart', {
-            cartProducts,
-            totalPrice: cart.totalPrice,
+            cart,
             pageTitle: 'Cart'
          });
       })
-   });
+      .catch(err => {
+         console.log(err);         
+      });
 };
 
 exports.postAddToCart = (req, res, next) => {
    const prodId = req.body.productId;
-   Product.fetchProductById(prodId, product => {
-      Cart.addProduct(prodId, product.title, product.price)
-   });
-   res.redirect('/cart');
-
-   //* OR we can send the price as a hidden field
-   // const prodPrice = req.body.productPrice;
-   // Cart.addProduct(prodId, prodPrice);
-   // res.redirect('/cart');
+   Product.fetchProductById(prodId)
+      .then(([product]) => {
+         Cart.addProduct(prodId, product[0].title, product[0].price)
+         .then(() => {
+            res.redirect('/cart');
+         })
+         .catch(err => console.log(err));
+      })
+      .catch(err => console.log(err));
 }
 
 exports.postDeletFromCart = (req, res) => {
    const prodId = req.body.productId;
-   Product.fetchProductById(prodId, product => {
-      Cart.deleteFromCart(prodId, product.price);
-      res.redirect('/cart');
-   })
+   
+   Cart.deleteFromCart(prodId)
+      .then(() => {
+         res.redirect('/cart');
+      })
+      .catch(err => console.log(err));
 }
 
 exports.getCheckout = (req, res, next) => {
-   Product.fetchAll(products => {
-      res.render('shop/checkout', {
-         pageTitle: 'Checkout'
-      });
-   });
+   Product.fetchAll()
+      .then(() => {
+         res.render('shop/checkout', {
+            pageTitle: 'Checkout'
+         });
+      })
+      .catch(err => console.log(err));
 };
 
 exports.getOrders = (req, res, next) => {
-   Product.fetchAll(products => {
-      res.render('shop/orders', {
-         pageTitle: 'Orders'
-      });
-   });
+   Product.fetchAll()
+      .then( () => {
+         res.render('shop/orders', {
+            pageTitle: 'Orders'
+         });
+      })
+      .catch(err => console.log(err));
 };

@@ -8,21 +8,18 @@
 <body>
    <%- include('../includes/navBar') %>
    <main>
-      <%if(cartProducts.length) {%>
-         <%cartProducts.forEach(product => {%>
+      <%if(cart.length) {%>
+         <%cart.forEach(product => {%>
             <p>
                <li>
-                  <%=product.productData.title%> (<%=product.quantity%>)               
+                  <%=product.title%> (<%=product.quantity%>)               
                   <form action="/delete-from-cart" method="post">
                      <button class="btn">Delete</button>
-                     <input type="hidden" name="productId" value="<%=product.productData.Id%>">
+                     <input type="hidden" name="productId" value="<%=product.Id%>">
                   </form>
                </li>
             </p>
          <%})%>
-         <p>
-            Total price: $<%=totalPrice%>
-         </p>
       <%} else {%>
          <h1>No products in the cart yet.</h1>
       <%}%>
