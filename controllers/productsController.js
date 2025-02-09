@@ -1,16 +1,14 @@
 const Product = require('../models/ProductModel');
 
 exports.getProducts = (req, res, next) => {
-   Product.fetchAll()
-      .then(([products]) => {        
+   Product.findAll()
+      .then(products => {
          res.render('shop/product-list', {
             prods: products,
             pageTitle: 'Products'
          });
       })
-      .catch(err => {
-         console.log(err);
-      });
+      .catch(err => console.log(err));
 };
 
 exports.getProductDetails = (req, res, next) => {
@@ -38,14 +36,12 @@ exports.getProductDetails = (req, res, next) => {
 };
 
 exports.getIndex = (req, res, next) => {
-   Product.fetchAll()
-      .then( ([products]) => {         
+   Product.findAll()
+      .then(products => {
          res.render('shop/index', {
             prods: products,
             pageTitle: 'Shop'
-         });         
+         });   
       })
-      .catch(err => {
-         console.log(err);
-      });
+      .catch(err => console.log(err));
 };
