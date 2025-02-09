@@ -11,7 +11,6 @@ const fetchCartFromFile = (callback) => {
          callback(JSON.parse(fileContent));
    })
 }
-
 module.exports = class Cart {
    static fetchAll(callback) {
       fetchCartFromFile(cart => {

@@ -11,14 +11,17 @@ exports.getAddProduct = (req, res, next) => {
 exports.getEditProduct = (req, res, next) => {
    const editMode = req.query.edit;
    const productId = req.params.productId;
-   Product.fetchProductById(productId, product => {
+   Product.fetchProductById(productId)
+   .then(([product]) => {
       res.render('admin/edit-product', {
-         product,
+         product: product[0],
          pageTitle: 'Edit Product',
          editing: editMode
       });
    })
-   
+   .catch(err => {
+      console.log(err);      
+   });
 };
 
 exports.postEditProduct = (req, res, next) => {
@@ -29,9 +32,13 @@ exports.postEditProduct = (req, res, next) => {
    const updatedDescription = requestBody.description;
    const productId = requestBody.productId;
    const updatedProduct = new Product(updatedTitle, updatedImageUrl, updatedPrice, updatedDescription, productId);
-   console.log(updatedProduct.Id);
-   updatedProduct.save();
-   res.redirect('/admin/products');
+   updatedProduct.save()
+      .then(() => {
+         res.redirect('/admin/Products');
+      })
+      .catch(err => {
+         console.log(err);
+      });
 }
 
 exports.postAddProduct = (req, res, next) => {
@@ -41,21 +48,32 @@ exports.postAddProduct = (req, res, next) => {
    const price = body.price;
    const description = body.description;
    const product = new Product(title, imageUrl, price, description);
-   product.save();
-   res.redirect('/admin/products');
+   product.save()
+      .then( () => {
+         res.redirect('/admin/products');
+      })
+      .catch(err => {
+         console.log(err);         
+      });
 };
 
 exports.postDeleteProduct = (req, res, next) => {
    const productId = req.body.productId;
-   Product.deleteById(productId);
-   res.redirect('/admin/products');
+   Product.deleteById(productId)
+      .then(() => {
+         res.redirect('/admin/products');
+      })
+      .catch(err => {
+         console.log(err);
+      });
 }
 
 exports.getProducts = (req, res, next) => {
-   const products = Product.fetchAll(products => {
-      res.render('admin/products', {
-         prods: products,
-         pageTitle: 'Products'
+   Product.fetchAll()
+      .then(([products]) => {         
+         res.render('admin/products', {
+            prods: products,
+            pageTitle: 'Products'
+         });
       });
-   });
 };
