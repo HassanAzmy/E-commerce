@@ -5,7 +5,8 @@ const path = require('path');
 const adminRouter = require('./routes/admin');
 const shopRouter = require('./routes/shop');
 const errorController = require('./controllers/errorController');
-const db = require('./utility/database');
+const sequelize = require('./utility/database');
+const { log } = require('console');
 
 const app = express();
 
@@ -22,7 +23,12 @@ app.use((req, res, next) => {
 
 app.use('/admin', adminRouter);
 app.use(shopRouter);
-
 app.use(errorController.get404);
 
-app.listen(3000);
+//* It syncs models to the database by creating tables
+sequelize.sync()
+   .then(result => {
+      console.log(result);
+      app.listen(3000);
+   })
+   .catch(err => console.log(err));
