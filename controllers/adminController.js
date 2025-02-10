@@ -1,12 +1,8 @@
 const Product = require('../models/ProductModel');
 const express = require('express');
 
-/**
- * @param {express.Request} req
- * @param {express.Response} res
- * @param {express.NextFunction} next
- */
 
+/** @param {express.Request} req */
 exports.getAddProduct = (req, res, next) => {
    res.render('admin/edit-product', {
       pageTitle: 'Add Product',
@@ -15,22 +11,24 @@ exports.getAddProduct = (req, res, next) => {
    });
 };
 
+/** @param {express.Request} req */
 exports.getEditProduct = (req, res, next) => {
    const editMode = req.query.edit;
    const productId = req.params.productId;
    Product.findByPk(productId)
-      .then(product => {
-         res.render('admin/edit-product', {
-            product: product,
-            pageTitle: 'Edit Product',
-            editing: editMode
-         });
-      })
-      .catch(err => {
-         console.log(err);
+   .then(product => {
+      res.render('admin/edit-product', {
+         product: product,
+         pageTitle: 'Edit Product',
+         editing: editMode
       });
+   })
+   .catch(err => {
+      console.log(err);
+   });
 };
 
+/** @param {express.Request} req */
 exports.postEditProduct = (req, res, next) => {
    const requestBody = req.body;
    const updatedTitle = requestBody.title;
@@ -52,14 +50,15 @@ exports.postEditProduct = (req, res, next) => {
          }
       }
    )
-      .then(() => {
-         res.redirect('/admin/Products');
-      })
-      .catch(err => {
-         console.log(err);
-      });
+   .then(() => {
+      res.redirect('/admin/Products');
+   })
+   .catch(err => {
+      console.log(err);
+   });
 };
-
+   
+/** @param {express.Request} req */
 exports.postAddProduct = (req, res, next) => {
    const body = req.body;
    const title = body.title;
@@ -80,6 +79,7 @@ exports.postAddProduct = (req, res, next) => {
       .catch(err => console.log(err));
 };
 
+/** @param {express.Request} req */
 exports.postDeleteProduct = async (req, res, next) => {
    const productId = req.body.productId;
    //* we can use findByPk then product.destroy() on the recieved product
@@ -97,6 +97,7 @@ exports.postDeleteProduct = async (req, res, next) => {
    }
 };
 
+/** @param {express.Request} req */
 exports.getProducts = (req, res, next) => {
    Product.findAll()
       .then(products => {         
