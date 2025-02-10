@@ -28,7 +28,7 @@ app.use(errorController.get404);
 //* It syncs models to the database by creating tables
 sequelize.sync()
    .then(result => {
-      console.log(result);
+      console.log('Server has been started');
       app.listen(3000);
    })
    .catch(err => console.log(err));
