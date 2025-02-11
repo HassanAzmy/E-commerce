@@ -1,6 +1,8 @@
 const Product = require('../models/ProductModel');
 const Cart = require('../models/cartModel');
+const express = require('express');
 
+/** @param {express.Request} req */
 exports.getCartProducts = (req, res, next) => {
    Cart.fetchAll()
       .then(([cart]) => {
@@ -14,6 +16,7 @@ exports.getCartProducts = (req, res, next) => {
       });
 };
 
+/** @param {express.Request} req */
 exports.postAddToCart = (req, res, next) => {
    const prodId = req.body.productId;
    Product.fetchProductById(prodId)
@@ -27,6 +30,7 @@ exports.postAddToCart = (req, res, next) => {
       .catch(err => console.log(err));
 }
 
+/** @param {express.Request} req */
 exports.postDeletFromCart = (req, res) => {
    const prodId = req.body.productId;
    
@@ -37,6 +41,7 @@ exports.postDeletFromCart = (req, res) => {
       .catch(err => console.log(err));
 }
 
+/** @param {express.Request} req */
 exports.getCheckout = (req, res, next) => {
    Product.fetchAll()
       .then(() => {
@@ -47,6 +52,7 @@ exports.getCheckout = (req, res, next) => {
       .catch(err => console.log(err));
 };
 
+/** @param {express.Request} req */
 exports.getOrders = (req, res, next) => {
    Product.fetchAll()
       .then( () => {

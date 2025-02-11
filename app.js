@@ -20,6 +20,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use((req, res, next) => {
    res.locals.url = req.originalUrl;
+   User.findByPk(1)
+      .then(user => {
+         //* Sequelize object
+         req.user = user;
+         next();
+      })
+      .catch(err => console.log(err));
    next();
 })
 
@@ -28,14 +35,25 @@ app.use(shopRouter);
 app.use(errorController.get404);
 
 Product.belongsTo(User, {constraints: true, onDelete: 'CASCADE'});
+//* User(1) => Product(M)
 User.hasMany(Product);
 
 //* It syncs models to the database by creating tables
 //* It also defines the relations in the database
 //* force: true => to forcly override the database if exists
-sequelize.sync({force: true})
+// sequelize.sync({force: true})
+sequelize.sync()
    .then(result => {
-      console.log('Server has been started');
-      app.listen(3000);
+      return User.findByPk(1);
    })
+   .then(user => {
+      if(!user) {
+         return User.create({name: 'Azmy', email: 'Azmy@test.com'});
+      }
+      return user;
+   })
+   .then(user => {
+      // console.log(user);
+      app.listen(3000);
+   }) 
    .catch(err => console.log(err));

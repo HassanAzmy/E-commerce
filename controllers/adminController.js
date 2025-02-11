@@ -1,7 +1,6 @@
 const Product = require('../models/ProductModel');
 const express = require('express');
 
-
 /** @param {express.Request} req */
 exports.getAddProduct = (req, res, next) => {
    res.render('admin/edit-product', {
@@ -91,7 +90,7 @@ exports.postDeleteProduct = async (req, res, next) => {
             }
          }
       );
-      res.redirect('/admin/products');
+      res.redirect('/admin/Products');
    } catch(err) {
       console.log(err);
    }

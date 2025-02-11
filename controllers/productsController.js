@@ -1,5 +1,7 @@
 const Product = require('../models/ProductModel');
+const express = require('express');
 
+/** @param {express.Request} req */
 exports.getProducts = (req, res, next) => {
    Product.findAll()
       .then(products => {
@@ -11,6 +13,7 @@ exports.getProducts = (req, res, next) => {
       .catch(err => console.log(err));
 };
 
+/** @param {express.Request} req */
 exports.getProductDetails = (req, res, next) => {
    const productId = req.params.productId;
    //* Product.findAll({where : {id: productId}}) also can be used but it will returns an array
@@ -28,6 +31,7 @@ exports.getProductDetails = (req, res, next) => {
       });
 };
 
+/** @param {express.Request} req */
 exports.getIndex = (req, res, next) => {
    Product.findAll()
       .then(products => {
