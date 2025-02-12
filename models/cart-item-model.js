@@ -2,7 +2,7 @@ const Sequelize = require('sequelize');
 
 const sequelize = require('../utility/database');
 
-const CartItem = sequelize.define('cart', {
+const CartItem = sequelize.define('cartItem', {
     Id: {
         type: Sequelize.INTEGER,
         autoIncrement: true,

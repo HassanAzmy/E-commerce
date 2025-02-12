@@ -4,16 +4,19 @@ const express = require('express');
 
 /** @param {express.Request} req */
 exports.getCartProducts = (req, res, next) => {
-   Cart.fetchAll()
-      .then(([cart]) => {
-         res.render('shop/cart', {
-            cart,
-            pageTitle: 'Cart'
-         });
-      })
-      .catch(err => {
-         console.log(err);         
-      });
+    req.user.getCart()
+        .then(cart => {
+            return cart.getProducts();
+        })
+        .then(products => {
+            res.render('shop/cart', {
+                products,
+                pageTitle: 'Cart'
+            });
+        })
+        .catch(err => {
+            console.log(err);
+        });
 };
 
 /** @param {express.Request} req */

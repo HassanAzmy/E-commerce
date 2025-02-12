@@ -8,8 +8,8 @@
 <body>
    <%- include('../includes/navBar') %>
    <main>
-      <%if(cart.length) {%>
-         <%cart.forEach(product => {%>
+      <%if(products.length) {%>
+         <%products.forEach(product => {%>
             <p>
                <li>
                   <%=product.title%> (<%=product.quantity%>)               

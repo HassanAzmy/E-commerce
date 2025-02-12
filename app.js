@@ -25,8 +25,6 @@ app.use((req, res, next) => {
    User.findByPk(1)
       .then(user => {
          //* Sequelize object
-         // console.log(user);
-   
          req.user = user;
          next();
       })
@@ -66,6 +64,9 @@ sequelize.sync()
    })
    .then(user => {
       // console.log(user);
-      app.listen(3000);
-   }) 
+      return user.createCart();
+   })
+    .then(cart => {
+        app.listen(3000);
+    })
    .catch(err => console.log(err));
