@@ -71,22 +71,47 @@ exports.postDeletFromCart = (req, res) => {
 
 /** @param {express.Request} req */
 exports.getCheckout = (req, res, next) => {
-   Product.fetchAll()
-      .then(() => {
-         res.render('shop/checkout', {
-            pageTitle: 'Checkout'
-         });
-      })
-      .catch(err => console.log(err));
+   // Product.fetchAll()
+   //    .then(() => {
+   //       res.render('shop/checkout', {
+   //          pageTitle: 'Checkout'
+   //       });
+   //    })
+   //    .catch(err => console.log(err));
 };
 
 /** @param {express.Request} req */
 exports.getOrders = (req, res, next) => {
-   Product.fetchAll()
-      .then( () => {
-         res.render('shop/orders', {
-            pageTitle: 'Orders'
-         });
-      })
-      .catch(err => console.log(err));
+   // Product.fetchAll()
+   //    .then( () => {
+   //       res.render('shop/orders', {
+   //          pageTitle: 'Orders'
+   //       });
+   //    })
+   //    .catch(err => console.log(err));
+};
+
+/** @param {express.Request} req */
+exports.postOrder = (req, res, next) => {
+    req.user.getCart()
+        .then(cart => {
+            return cart.getProducts();
+        })
+        .then(products => {
+            return req.user
+                .createOrder()
+                .then(order => {
+                    order.addProducts(products.map(product => {
+                        product.orderItem = {
+                            quantity: product.cartItem.quantity
+                        };
+                        return product;
+                    }));
+                })
+                .catch(err => console.log(err));
+        })
+        .then(() => {
+            res.redirect('/orders');
+        })
+        .catch(err => console.log(err));
 };

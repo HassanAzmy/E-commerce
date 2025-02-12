@@ -10,6 +10,8 @@ const Product = require('./models/ProductModel');
 const User = require('./models/userModel');
 const Cart = require('./models/cart-model');
 const CartItem = require('./models/cart-item-model');
+const Order = require('./models/order-model');
+const OrderItem = require('./models/order-item-model');
 const { log } = require('console');
 
 const app = express();
@@ -47,6 +49,11 @@ Cart.belongsTo(User) // optional we can omit it
 //* through to add the third table that references to both tables => CartItem(productId, cartId, quantity)
 Cart.belongsToMany(Product, {through: CartItem});
 Product.belongsToMany(Cart, {through: CartItem});
+
+Order.belongsTo(User);
+User.hasMany(Order);
+
+Order.belongsToMany(Product, {through: OrderItem});
 
 //* It syncs models to the database by creating tables
 //* It also defines the relations in the database
