@@ -8,6 +8,8 @@ const errorController = require('./controllers/errorController');
 const sequelize = require('./utility/database');
 const Product = require('./models/ProductModel');
 const User = require('./models/userModel');
+const Cart = require('./models/cart-model');
+const CartItem = require('./models/cart-item-model');
 const { log } = require('console');
 
 const app = express();
@@ -35,9 +37,18 @@ app.use('/admin', adminRouter);
 app.use(shopRouter);
 app.use(errorController.get404);
 
+//* one-to-many relationship
 Product.belongsTo(User, {constraints: true, onDelete: 'CASCADE'});
-//* User(1) => Product(M)
 User.hasMany(Product);
+
+//* one-to-one relationship
+User.hasOne(Cart);
+Cart.belongsTo(User) // optional we can omit it
+
+//* Many-to-many relationship
+//* through to add the third table that references to both tables => CartItem(productId, cartId, quantity)
+Cart.belongsToMany(Product, {through: CartItem});
+Product.belongsToMany(Cart, {through: CartItem});
 
 //* It syncs models to the database by creating tables
 //* It also defines the relations in the database

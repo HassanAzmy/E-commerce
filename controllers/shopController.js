@@ -1,5 +1,5 @@
 const Product = require('../models/ProductModel');
-const Cart = require('../models/cartModel');
+const Cart = require('../models/cart-model');
 const express = require('express');
 
 /** @param {express.Request} req */
