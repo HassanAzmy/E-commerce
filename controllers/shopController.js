@@ -21,16 +21,34 @@ exports.getCartProducts = (req, res, next) => {
 
 /** @param {express.Request} req */
 exports.postAddToCart = (req, res, next) => {
-   const prodId = req.body.productId;
-   Product.fetchProductById(prodId)
-      .then(([product]) => {
-         Cart.addProduct(prodId, product[0].title, product[0].price)
-         .then(() => {
+    const prodId = req.body.productId;
+    let fetchedCart;
+    let newQuantity = 1;
+    req.user.getCart()
+        .then(cart => {
+            fetchedCart = cart;
+            return cart.getProducts({where: {Id: prodId}});
+        })
+        .then(products => {
+            if(products.length > 0) {
+                const product = products[0];
+                const oldQuantity = product.cartItem.quantity;
+                newQuantity = oldQuantity + 1;
+                return product;
+            }
+            return Product.findByPk(prodId);
+        })
+        .then(product => {
+            return fetchedCart.addProduct(product, {
+                through: {
+                    quantity: newQuantity
+                }
+            });
+        })
+        .then(() => {
             res.redirect('/cart');
-         })
-         .catch(err => console.log(err));
-      })
-      .catch(err => console.log(err));
+        })
+        .catch(err => {console.log(err)});
 }
 
 /** @param {express.Request} req */

@@ -2,29 +2,30 @@
 <html lang="en">
 
 <head>
-   <%- include('../includes/head') %>
+    <%- include('../includes/head') %>
+    <link rel="stylesheet" href="/css/cart.css">
 </head>
 
 <body>
    <%- include('../includes/navBar') %>
-   <main>
-      <%if(products.length) {%>
-         <%products.forEach(product => {%>
-            <p>
-               <li>
-                  <%=product.title%> (<%=product.quantity%>)               
-                  <form action="/delete-from-cart" method="post">
-                     <button class="btn">Delete</button>
-                     <input type="hidden" name="productId" value="<%=product.Id%>">
-                  </form>
-               </li>
-            </p>
-         <%})%>
-      <%} else {%>
+    <main>
+        <%if(products.length) {%>
+            <ul class="cart__item-list">
+                 <%products.forEach(product => {%>
+                    <li class="cart__item">
+                        <h1><%=product.title%></h1>
+                        <h2>Quantity: <%=product.cartItem.quantity%></h2>
+                      <form action="/delete-from-cart" method="post">
+                         <button class="btn">Delete</button>
+                         <input type="hidden" name="productId" value="<%=product.Id%>">
+                      </form>
+                   </li>
+                 <%})%>
+            </ul>
+        <%} else {%>
          <h1>No products in the cart yet.</h1>
-      <%}%>
-      
-   </main>
+        <%}%>
+    </main>
 </body>
 
 </html>
