@@ -23,11 +23,12 @@ app.use((req, res, next) => {
    User.findByPk(1)
       .then(user => {
          //* Sequelize object
+         // console.log(user);
+   
          req.user = user;
          next();
       })
       .catch(err => console.log(err));
-   next();
 })
 
 app.use('/admin', adminRouter);

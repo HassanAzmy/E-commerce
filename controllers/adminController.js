@@ -64,18 +64,27 @@ exports.postAddProduct = (req, res, next) => {
    const imageUrl = body.imageUrl;
    const price = body.price;
    const description = body.description;
-   Product.create(
-      {
-         title,
-         imageUrl,
-         price,
-         description
-      }
-   )
+   req.user.createProduct({
+      title,
+      imageUrl,
+      price,
+      description
+   })
       .then(() => {
          res.redirect('/admin/Products');
       })
       .catch(err => console.log(err));
+
+   //* here we assign the Id while creating the product 
+   // Product.create(
+   //    {
+   //       title,
+   //       imageUrl,
+   //       price,
+   //       description,
+   //       userId: req.user.Id
+   //    }
+   // )
 };
 
 /** @param {express.Request} req */
