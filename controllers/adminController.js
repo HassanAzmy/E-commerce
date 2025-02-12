@@ -14,17 +14,19 @@ exports.getAddProduct = (req, res, next) => {
 exports.getEditProduct = (req, res, next) => {
    const editMode = req.query.edit;
    const productId = req.params.productId;
-   Product.findByPk(productId)
-   .then(product => {
-      res.render('admin/edit-product', {
-         product: product,
-         pageTitle: 'Edit Product',
-         editing: editMode
+
+   // Product.findByPk(productId)
+   req.user.getProducts({ where: { Id: productId }})
+      .then(products => {
+         res.render('admin/edit-product', {
+            product: products[0],
+            pageTitle: 'Edit Product',
+            editing: editMode
+         });
+      })
+      .catch(err => {
+         console.log(err);
       });
-   })
-   .catch(err => {
-      console.log(err);
-   });
 };
 
 /** @param {express.Request} req */
@@ -107,7 +109,8 @@ exports.postDeleteProduct = async (req, res, next) => {
 
 /** @param {express.Request} req */
 exports.getProducts = (req, res, next) => {
-   Product.findAll()
+   // Product.findAll()
+   req.user.getProducts()
       .then(products => {         
          res.render('admin/products', {
             prods: products,
