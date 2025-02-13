@@ -4,10 +4,10 @@ const path = require('path');
 
 const adminRouter = require('./routes/admin');
 const shopRouter = require('./routes/shop');
-const errorController = require('./controllers/errorController');
+const errorController = require('./controllers/error-controller');
 const sequelize = require('./utility/database');
-const Product = require('./models/ProductModel');
-const User = require('./models/userModel');
+const Product = require('./models/product-model');
+const User = require('./models/user-model');
 const Cart = require('./models/cart-model');
 const CartItem = require('./models/cart-item-model');
 const Order = require('./models/order-model');
@@ -43,17 +43,32 @@ User.hasMany(Product);
 
 //* one-to-one relationship
 User.hasOne(Cart);
-Cart.belongsTo(User) // optional we can omit it
+Cart.belongsTo(User)
 
 //* Many-to-many relationship
 //* through to add the third table that references to both tables => CartItem(productId, cartId, quantity)
 Cart.belongsToMany(Product, {through: CartItem});
 Product.belongsToMany(Cart, {through: CartItem});
 
+//* one-to-many relationship
 Order.belongsTo(User);
 User.hasMany(Order);
 
 Order.belongsToMany(Product, {through: OrderItem});
+
+//* Testing the database connection  
+(
+   async function testConnection() {
+      try {
+         await sequelize.authenticate();
+         console.log('Connection has been established successfully.');
+      } catch (error) {
+         console.error('Unable to connect to the database:', error);
+      }
+   }
+)()
+
+let fetchedUser;
 
 //* It syncs models to the database by creating tables
 //* It also defines the relations in the database
@@ -70,10 +85,15 @@ sequelize.sync()
       return user;
    })
    .then(user => {
-      // console.log(user);
-      return user.createCart();
+      fetchedUser = user;
+      return user.getCart();
    })
-    .then(cart => {
-        app.listen(3000);
-    })
+   .then(cart => {
+      if(!cart)
+         return fetchedUser.createCart();
+      return cart;
+   })
+   .then(cart => {
+      app.listen(3000);
+   })
    .catch(err => console.log(err));
