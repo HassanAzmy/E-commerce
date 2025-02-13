@@ -1,8 +1,7 @@
-const express = require('express');
-const path = require('path');
+import express from 'express';
+import * as adminController from '../controllers/admin-controller.js';
 
 const router = express.Router();
-const adminController = require('../controllers/admin-controller');
 
 router.get('/add-product', adminController.getAddProduct);
 
@@ -16,4 +15,4 @@ router.post('/edit-product', adminController.postEditProduct);
 
 router.post('/delete-product', adminController.postDeleteProduct);
 
-module.exports = router; 
+export default router

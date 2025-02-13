@@ -1,9 +1,8 @@
-const express = require('express');
-const path = require('path');
+import express from 'express';
+import * as shopController from '../controllers/shop-controller.js';
+import * as productsController from '../controllers/products-controller.js';
 
 const router = express.Router();
-const shopController = require('../controllers/shop-controller');
-const productsController = require('../controllers/products-controller');
 
 router.get('/', productsController.getIndex);
 
@@ -21,4 +20,4 @@ router.get('/orders', shopController.getOrders);
 
 router.post('/create-order', shopController.postOrder);
 
-module.exports = router;
+export default router;

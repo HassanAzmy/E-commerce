@@ -1,6 +1,5 @@
-const Sequelize = require('sequelize');
-
-const sequelize = require('../utility/database');
+import { Sequelize } from 'sequelize';
+import sequelize from '../utility/database.js';
 
 //* Defining the model and its attributes
 const Product = sequelize.define('product', {
@@ -25,4 +24,4 @@ const Product = sequelize.define('product', {
    }
 }); 
 
-module.exports = Product;
+export default Product;

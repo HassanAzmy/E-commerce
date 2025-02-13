@@ -1,20 +1,22 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const path = require('path');
-
-const adminRouter = require('./routes/admin');
-const shopRouter = require('./routes/shop');
-const errorController = require('./controllers/error-controller');
-const sequelize = require('./utility/database');
-const Product = require('./models/product-model');
-const User = require('./models/user-model');
-const Cart = require('./models/cart-model');
-const CartItem = require('./models/cart-item-model');
-const Order = require('./models/order-model');
-const OrderItem = require('./models/order-item-model');
-const { log } = require('console');
+import express from 'express';
+import bodyParser from 'body-parser';
+import path, { dirname } from 'path';
+import adminRouter from './routes/admin.js';
+import shopRouter from './routes/shop.js';
+import * as errorController from './controllers/error-controller.js';
+import sequelize from './utility/database.js';
+import Product from './models/product-model.js';
+import User from './models/user-model.js';
+import Cart from './models/cart-model.js';
+import CartItem from './models/cart-item-model.js';
+import Order from './models/order-model.js';
+import OrderItem from './models/order-item-model.js';
+import { fileURLToPath } from 'url';
 
 const app = express();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 app.set('view engine', 'ejs');
 app.set('views', 'views');
@@ -70,30 +72,27 @@ Order.belongsToMany(Product, {through: OrderItem});
 
 let fetchedUser;
 
-//* It syncs models to the database by creating tables
-//* It also defines the relations in the database
-//* force: true => to forcly override the database if exists
-// sequelize.sync({force: true})
-sequelize.sync()
-   .then(result => {
-      return User.findByPk(1);
-   })
-   .then(user => {
-      if(!user) {
-         return User.create({name: 'Azmy', email: 'Azmy@test.com'});
+(
+   async function seq() {
+      try {
+         //* It syncs models to the database by creating tables
+         //* It also defines the relations in the database
+         //* force: true => to forcly override the database if exists
+         // const result = await sequelize.sync({ force: true })
+         const result = await sequelize.sync();
+         let user = await User.findByPk(1);
+            
+         if (!user) {
+            user = await User.create({ name: 'Azmy', email: 'Azmy@test.com' });
+         }
+
+         let cart = await user.getCart();
+         if (!cart)
+            cart = await user.createCart();
+   
+         app.listen(3000);
+      } catch (err) {
+         console.log(err);
       }
-      return user;
-   })
-   .then(user => {
-      fetchedUser = user;
-      return user.getCart();
-   })
-   .then(cart => {
-      if(!cart)
-         return fetchedUser.createCart();
-      return cart;
-   })
-   .then(cart => {
-      app.listen(3000);
-   })
-   .catch(err => console.log(err));
+   }
+)()

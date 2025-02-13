@@ -1,8 +1,8 @@
-const Product = require('../models/product-model');
-const express = require('express');
+import Product from '../models/product-model.js'
+import express from 'express';
 
 /** @param {express.Request} req */
-exports.getAddProduct = (req, res, next) => {
+export function getAddProduct(req, res, next) {
    res.render('admin/edit-product', {
       pageTitle: 'Add Product',
       url: '/admin/add-product',
@@ -11,7 +11,7 @@ exports.getAddProduct = (req, res, next) => {
 };
 
 /** @param {express.Request} req */
-exports.getEditProduct = async (req, res, next) => {
+export async function getEditProduct (req, res, next) {
    try {
       const editMode = req.query.edit;
       const productId = req.params.productId;
@@ -27,7 +27,7 @@ exports.getEditProduct = async (req, res, next) => {
 };
 
 /** @param {express.Request} req */
-exports.postEditProduct = async (req, res, next) => {
+export async function postEditProduct (req, res, next) {
    try {
       const requestBody = req.body;
       const updatedTitle = requestBody.title;
@@ -56,7 +56,7 @@ exports.postEditProduct = async (req, res, next) => {
 };
    
 /** @param {express.Request} req */
-exports.postAddProduct = async (req, res, next) => {
+export async function postAddProduct (req, res, next) {
    try {
       const body = req.body;
       const title = body.title;
@@ -76,7 +76,7 @@ exports.postAddProduct = async (req, res, next) => {
 };
 
 /** @param {express.Request} req */
-exports.postDeleteProduct = async (req, res, next) => {
+export async function postDeleteProduct (req, res, next) {
    try {
       const productId = req.body.productId;
       //* we can use findByPk then product.destroy() on the recieved product
@@ -94,7 +94,7 @@ exports.postDeleteProduct = async (req, res, next) => {
 };
 
 /** @param {express.Request} req */
-exports.getProducts = async (req, res, next) => {
+export async function getProducts (req, res, next) {
    try {
       const products = await req.user.getProducts();
       res.render('admin/products', {

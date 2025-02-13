@@ -1,8 +1,8 @@
-const Product = require('../models/product-model');
-const express = require('express');
+import Product from '../models/product-model.js';
+import express from 'express';
 
 /** @param {express.Request} req */
-exports.getProducts = async (req, res, next) => {
+export async function getProducts (req, res, next) {
    try {
       const products = await Product.findAll();
       res.render('shop/product-list', {
@@ -15,7 +15,7 @@ exports.getProducts = async (req, res, next) => {
 };
 
 /** @param {express.Request} req */
-exports.getProductDetails = async (req, res, next) => {
+export async function getProductDetails (req, res, next) {
    try {
       const productId = req.params.productId;
 
@@ -34,7 +34,7 @@ exports.getProductDetails = async (req, res, next) => {
 };
 
 /** @param {express.Request} req */
-exports.getIndex = async (req, res, next) => {
+export async function getIndex (req, res, next) {
    try {
       const products = await Product.findAll();
       res.render('shop/index', {

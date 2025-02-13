@@ -1,12 +1,8 @@
-const express = require('express');
-
-const Product = require('../models/product-model');
-const Cart = require('../models/cart-model');
-const  Sequelize  = require('sequelize').Sequelize;
-
+import express from 'express';
+import Product from '../models/product-model.js';
 
 /** @param {express.Request} req */
-exports.getCartProducts = async (req, res, next) => {
+export async function getCartProducts (req, res, next) {
     try {
         const cart = await req.user.getCart();
         const products = await cart.getProducts();
@@ -20,7 +16,7 @@ exports.getCartProducts = async (req, res, next) => {
 };
 
 /** @param {express.Request} req */
-exports.postAddToCart = async (req, res, next) => {
+export async function postAddToCart (req, res, next) {
     try {
         const prodId = req.body.productId;
         let newQuantity = 1;
@@ -28,11 +24,10 @@ exports.postAddToCart = async (req, res, next) => {
 
         const cart = await req.user.getCart();
         const products = await cart.getProducts({ where: { Id: prodId } });
-    
-        //* product exists in the cart 
-        if (products.length > 0) {
+        const productIsExist = products.length > 0;
+        if (productIsExist) {
             product = products[0];
-            const oldQuantity = product.cartItem.quantity;
+            const oldQuantity = product.cartItem.quantity;            
             newQuantity = oldQuantity + 1;
         }
         else {        
@@ -50,7 +45,7 @@ exports.postAddToCart = async (req, res, next) => {
 }
 
 /** @param {express.Request} req */
-exports.postDeletFromCart = async (req, res) => {
+export async function postDeletFromCart (req, res) {
     try {
         const prodId = req.body.productId;
 
@@ -66,14 +61,14 @@ exports.postDeletFromCart = async (req, res) => {
 }
 
 /** @param {express.Request} req */
-exports.getCheckout = (req, res, next) => {
+export async function getCheckout (req, res, next) {
     res.render('shop/checkout', {
     pageTitle: 'Checkout'
     });
 };
 
 /** @param {express.Request} req */
-exports.getOrders = async (req, res, next) => {
+export async function getOrders (req, res, next) {
     try {
         //* eager loading
         const orders = await req.user.getOrders({include: Product});
@@ -87,7 +82,7 @@ exports.getOrders = async (req, res, next) => {
 };
 
 /** @param {express.Request} req */
-exports.postOrder = async (req, res, next) => {
+export async function postOrder (req, res, next) {
     try {
         const cart = await req.user.getCart();
         const products = await cart.getProducts();
