@@ -8,10 +8,12 @@ let _db;
 export const mongoConnect = async (callback) => {
    try {
       const client = await MongoClient.connect('mongodb+srv://hassanhussien13579:TlTqXukOzGlsVrMC@cluster0.tdik0.mongodb.net/shop?retryWrites=true&w=majority&appName=Cluster0');
+
       //* We can pass the database name, if not the one specified in the connection string (shop) is used
       //* The DB is created on the fly for the first time. We have not to define it like in SQL
       // _db = client.db('hassanDB');
       _db = client.db();
+      
       callback();
    } catch(err) {
       console.log(err);
