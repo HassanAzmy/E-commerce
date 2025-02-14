@@ -3,17 +3,17 @@ import express from 'express';
 
 
 // /** @param {express.Request} req */
-// export async function getProducts(req, res, next) {
-//    try {
-//       const products = await req.user.getProducts();
-//       res.render('admin/products', {
-//          prods: products,
-//          pageTitle: 'Products'
-//       });
-//    } catch (err) {
-//       console.log(err);
-//    }
-// };
+export async function getProducts(req, res, next) {
+   try {
+      const products = await Product.fetchAll();
+      res.render('admin/products', {
+         prods: products,
+         pageTitle: 'Products'
+      });
+   } catch (err) {
+      console.log(err);
+   }
+};
 
 /** @param {express.Request} req */
 export function getAddProduct(req, res, next) {

@@ -1,4 +1,5 @@
 import {getDB} from '../utility/database.js'
+import {Db} from 'mongodb';
 
 export default class Product {
    constructor(title, price, desciption, imageUrl) {
@@ -8,6 +9,7 @@ export default class Product {
       this.imageUrl = imageUrl;
    }
 
+   /** @type {Db} */
    async save() {
       try {
          const db = getDB();
@@ -19,5 +21,16 @@ export default class Product {
       } catch(err) {
          console.log(err);         
       }
+   }
+
+   static async fetchAll() {
+      const db = getDB();
+
+      //* we can add a filter
+      // return db.collection('products').find({title: ' });
+
+      const products = await db.collection('products').find().toArray();
+      console.log(products);
+      return products;
    }
 }

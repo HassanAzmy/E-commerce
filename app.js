@@ -6,7 +6,7 @@ import { fileURLToPath } from 'url';
 import {mongoConnect} from './utility/database.js';
 import * as errorController from './controllers/error-controller.js';
 import adminRouter from './routes/admin.js';
-// import shopRouter from './routes/shop.js';
+import shopRouter from './routes/shop.js';
 
 const app = express();
 
@@ -25,7 +25,7 @@ app.use((req, res, next) => {
 })
 
 app.use('/admin', adminRouter);
-// app.use(shopRouter);
+app.use(shopRouter);
 app.use(errorController.get404);
 
 mongoConnect(() => {
