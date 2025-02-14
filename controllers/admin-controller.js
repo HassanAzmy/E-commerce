@@ -32,7 +32,7 @@ export async function postAddProduct(req, res, next) {
       const imageUrl = body.imageUrl;
       const price = body.price;
       const description = body.description;
-      const product = new Product(title, price, description, imageUrl);
+      const product = new Product(title, price, description, imageUrl, req.user._id);
       const queryRes =  await product.save();
       console.log('A product has been created');
       res.redirect('/admin/Products');

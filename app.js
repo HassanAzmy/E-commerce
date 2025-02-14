@@ -25,10 +25,9 @@ app.use((req, res, next) => {
    res.locals.url = req.originalUrl;
    (async function getUser() {
       const user = await User.findById('67afa8c99dd783a2e4488e34');
-      console.log('A user has been found');
       req.user = user;
+      next();
    })()
-   next();
 })
 
 app.use('/admin', adminRouter);
@@ -36,5 +35,6 @@ app.use(shopRouter);
 app.use(errorController.get404);
 
 mongoConnect(() => {
+   console.log('A Connection has been established');
    app.listen(3000);
 });

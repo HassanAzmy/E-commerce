@@ -2,11 +2,12 @@ import {getDB} from '../utility/database.js'
 import mongodb from 'mongodb';
 
 export default class Product {
-   constructor(title, price, description, imageUrl) {
+   constructor(title, price, description, imageUrl, userId) {
       this.title = title;
       this.price = price;
       this.description = description;
       this.imageUrl = imageUrl;
+      this.userId = new mongodb.ObjectId(`${userId}`);
    }
 
    async save() {
