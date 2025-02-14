@@ -33,10 +33,7 @@ export async function getProductDetails (req, res, next) {
    try {
       const productId = req.params.productId;
 
-      //* Product.findAll({where : {id: productId}}) also can be used but it will returns an array
-      const product = await Product.findByPk(productId);
-      // console.log(product);
-
+      const product = await Product.findById(productId);
       res.render('shop/product-details', {
          product,
          pageTitle: product.title,
