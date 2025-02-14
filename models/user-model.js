@@ -1,15 +1,25 @@
-import { Sequelize } from 'sequelize';
-import sequelize from '../utility/database.js';
+import mongodb from 'mongodb'
+import {getDB} from '../utility/database.js'
 
-const User = sequelize.define('user', {
-   Id: {
-      type: Sequelize.INTEGER,
-      autoIncrement: true,
-      allowNull: false,
-      primaryKey: true
-   },
-   name: Sequelize.STRING,
-   email: Sequelize.STRING
-});
+export default class User {
+   constructor(username, email) {
+      this.username = username;
+      this.email = email;
+   }
 
-export default User;
+   async save() {
+      try {
+         return await getDB().collection('users').insertOne(this);
+      } catch(err) {
+         throw err;
+      }
+   }
+
+   static async findById(userId) {
+      try {
+         return await getDB().collection('users').findOne({ _id: new mongodb.ObjectId(`${userId}`)});
+      } catch (err) {
+         console.log(err);         
+      }
+   }
+} 
