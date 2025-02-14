@@ -34,7 +34,7 @@ export async function postAddProduct(req, res, next) {
       const description = body.description;
       const product = new Product(title, price, description, imageUrl);
       const queryRes =  await product.save();
-      console.log('Created Product');
+      console.log('A product has been created');
       res.redirect('/admin/Products');
    } catch (err) {
       console.log(err);
@@ -42,64 +42,47 @@ export async function postAddProduct(req, res, next) {
 };
 
 // /** @param {express.Request} req */
-// export async function getEditProduct (req, res, next) {
-//    try {
-//       const editMode = req.query.edit;
-//       const productId = req.params.productId;
-//       const products = await req.user.getProducts({ where: { Id: productId }})
-//       res.render('admin/edit-product', {
-//          product: products[0],
-//          pageTitle: 'Edit Product',
-//          editing: editMode
-//       });
-//    } catch(err) {
-//       console.log(err);
-//    }
-// };
+export async function getEditProduct (req, res, next) {
+   try {
+      const editMode = req.query.edit;
+      const productId = req.params.productId;
+      const product = await Product.findById(productId);
+      res.render('admin/edit-product', {
+         product: product,
+         pageTitle: 'Edit Product',
+         editing: editMode
+      });
+   } catch(err) {
+      console.log(err);
+   }
+};
 
 // /** @param {express.Request} req */
-// export async function postEditProduct (req, res, next) {
-//    try {
-//       const requestBody = req.body;
-//       const updatedTitle = requestBody.title;
-//       const updatedImageUrl = requestBody.imageUrl;
-//       const updatedPrice = requestBody.price;
-//       const updatedDescription = requestBody.description;
-//       const productId = requestBody.productId;
-//       //* we can use findByPk and update each property (product.title = updatedTitle) then product.save()
-//       const queryRes = await Product.update(
-//          {
-//             title: updatedTitle,
-//             imageUrl: updatedImageUrl,
-//             price: updatedPrice,
-//             description: updatedDescription
-//          }, 
-//          {
-//             where: {
-//                Id: productId
-//             }
-//          }
-//       );
-//       res.redirect('/admin/Products');
-//    } catch (err) {
-//       console.log(err);
-//    }
-// };
+export async function postEditProduct (req, res, next) {
+   try {
+      const requestBody = req.body;
+      const updatedTitle = requestBody.title;
+      const updatedImageUrl = requestBody.imageUrl;
+      const updatedPrice = requestBody.price;
+      const updatedDescription = requestBody.description;
+      const productId = requestBody.productId;
+      const newProduct = new Product(updatedTitle, updatedPrice, updatedDescription, updatedImageUrl);
+      newProduct.update(productId);
+      console.log('A product has been updated');
+      res.redirect('/admin/Products');
+   } catch (err) {
+      console.log(err);
+   }
+};
 
 // /** @param {express.Request} req */
-// export async function postDeleteProduct (req, res, next) {
-//    try {
-//       const productId = req.body.productId;
-//       //* we can use findByPk then product.destroy() on the recieved product
-//       await Product.destroy(
-//          {
-//             where: {
-//                Id: productId
-//             }
-//          }
-//       );
-//       res.redirect('/admin/Products');
-//    } catch(err) {
-//       console.log(err);
-//    }
-// };
+export async function postDeleteProduct (req, res, next) {
+   try {
+      const productId = req.body.productId;
+      const queryRes = await Product.delete(productId);
+      console.log('A product has been deleted');
+      res.redirect('/admin/Products');
+   } catch(err) {
+      console.log(err);
+   }
+};

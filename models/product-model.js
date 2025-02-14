@@ -2,10 +2,10 @@ import {getDB} from '../utility/database.js'
 import mongodb from 'mongodb';
 
 export default class Product {
-   constructor(title, price, desciption, imageUrl) {
+   constructor(title, price, description, imageUrl) {
       this.title = title;
       this.price = price;
-      this.desciption = desciption;
+      this.description = description;
       this.imageUrl = imageUrl;
    }
 
@@ -38,10 +38,34 @@ export default class Product {
 
          //* mongodb creates the (_id) of type ObjectId which is not defined in JS. So we have to cast it
          //* if we use find() we have to use .next() to retrieve the next document from the cursor
-         const product = await db.collection('products').findOne({ _id: new mongodb.ObjectId(`${prodId}`) });
-         console.log(product);
+         const product = await db.collection('products').findOne({_id: new mongodb.ObjectId(`${prodId}`)});
          return product;
       } catch(err) {
+         throw err;
+      }
+   }
+
+   async update(prodId) {
+      try {
+         const db = getDB();
+
+         const queryRes = await db.collection('products').updateOne(
+            {_id: new mongodb.ObjectId(`${prodId}`)}, 
+            { $set: this }
+         );
+         return queryRes;
+      } catch(err) {
+         throw err;
+      }
+   }
+
+   static async delete(prodId) {
+      try {
+         const db = getDB();
+
+         const queryRes = await db.collection('products').deleteOne({ _id: new mongodb.ObjectId(`${prodId}`)});
+         return queryRes;
+      } catch (err) {
          throw err;
       }
    }
