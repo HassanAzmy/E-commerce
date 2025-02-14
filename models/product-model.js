@@ -1,5 +1,17 @@
-import { Sequelize } from 'sequelize';
-import sequelize from '../utility/database.js';
+import mongoConnect from '../utility/database'
+
+export default class Product {
+   constructor(title, price, desciption, imageUrl) {
+      this.title = title;
+      this.price = price;
+      this.desciption = desciption;
+      this.imageUrl = imageUrl;
+   }
+
+   save() {
+
+   }
+}
 
 //* Defining the model and its attributes
 const Product = sequelize.define('product', {
@@ -24,4 +36,4 @@ const Product = sequelize.define('product', {
    }
 }); 
 
-export default Product;
+// export default Product;

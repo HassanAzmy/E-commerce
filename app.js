@@ -5,7 +5,7 @@ import { fileURLToPath } from 'url';
 
 import mongoConnect from './utility/database.js';
 import * as errorController from './controllers/error-controller.js';
-// import adminRouter from './routes/admin.js';
+import adminRouter from './routes/admin.js';
 // import shopRouter from './routes/shop.js';
 
 const app = express();
@@ -31,7 +31,7 @@ app.use((req, res, next) => {
    //    .catch(err => console.log(err));
 })
 
-// app.use('/admin', adminRouter);
+app.use('/admin', adminRouter);
 // app.use(shopRouter);
 app.use(errorController.get404);
 
