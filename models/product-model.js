@@ -1,4 +1,4 @@
-import mongoConnect from '../utility/database'
+import {getDB} from '../utility/database'
 
 export default class Product {
    constructor(title, price, desciption, imageUrl) {

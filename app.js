@@ -3,7 +3,7 @@ import bodyParser from 'body-parser';
 import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
 
-import mongoConnect from './utility/database.js';
+import {mongoConnect} from './utility/database.js';
 import * as errorController from './controllers/error-controller.js';
 import adminRouter from './routes/admin.js';
 // import shopRouter from './routes/shop.js';
@@ -35,7 +35,6 @@ app.use('/admin', adminRouter);
 // app.use(shopRouter);
 app.use(errorController.get404);
 
-mongoConnect(client => {
+mongoConnect(() => {
    app.listen(3000);
-   console.log(client);
 });
