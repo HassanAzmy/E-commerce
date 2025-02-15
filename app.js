@@ -24,8 +24,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use((req, res, next) => {
    res.locals.url = req.originalUrl;
    (async function getUser() {
-      const user = await User.findById('67afa8c99dd783a2e4488e34');
-      req.user = user;
+      const user = await User.findById('67afd0a59dd783a2e4488e3b');
+      req.user = new User(user.username, user.email, user.cart, user._id);
       next();
    })()
 })
