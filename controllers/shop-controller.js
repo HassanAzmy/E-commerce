@@ -30,24 +30,12 @@ export async function postAddToCart (req, res, next) {
 export async function postDeletFromCart (req, res) {
     try {
         const prodId = req.body.productId;
-
-        const cart = await req.user.getCart();
-        const products = await cart.getProducts({ where: { Id: prodId } });
-        const product = products[0];        
-        const queryRes = await product.cartItem.destroy();
-
+        const queryRes = await req.user.deleteFromCart(prodId);
         res.redirect('/cart');
     } catch (err) {
         console.log(err);
     };
 }
-
-/** @param {express.Request} req */
-export async function getCheckout (req, res, next) {
-    res.render('shop/checkout', {
-    pageTitle: 'Checkout'
-    });
-};
 
 /** @param {express.Request} req */
 export async function getOrders (req, res, next) {
@@ -80,4 +68,11 @@ export async function postOrder (req, res, next) {
     } catch (err) {
         console.log(err);
     };
+};
+
+/** @param {express.Request} req */
+export async function getCheckout(req, res, next) {
+    res.render('shop/checkout', {
+        pageTitle: 'Checkout'
+    });
 };

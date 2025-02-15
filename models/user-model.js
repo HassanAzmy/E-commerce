@@ -53,32 +53,38 @@ export default class User {
    }
 
    async getCart() {
-      // const productsIds = this.cart.items.map(item => {
-      //    return item.productId;
-      // });
+      try {
+         const productsIds = this.cart.items.map(item => {
+            return item.productId;
+         });
 
-      // const products = await getDB().collection('products').find({_id: { $in: productsIds }}).toArray();
-      // return products.map(product => {
-      //    return {
-      //       ...product,
-      //       quantity: this.cart.items.find(item => {
-      //          return item.productId.toString() === product._id.toString();
-      //       }).quantity
-      //    }
-      // });
-
-      return await Promise.all(
-         //* The map function does not handle async operations, so using async with the callback will make
-         //* it returns an array of promises not the resolved values
-         //* We use promise.all to wait for all the promises returned by the map to resolve
-         this.cart.items.map(async item => {
-            const product = await getDB().collection('products').findOne({ _id: item.productId });
+         const products = await getDB().collection('products').find({_id: { $in: productsIds }}).toArray();
+         return products.map(product => {
             return {
                ...product,
-               quantity: item.quantity
-            };
-         })
-      );
-      
+               quantity: this.cart.items.find(item => {
+                  return item.productId.toString() === product._id.toString();
+               }).quantity
+            }
+         });
+      } catch(err) {
+         console.log(err);         
+      }
+   }
+
+   async deleteFromCart(prodId) {
+      try {
+         const updatedItems = this.cart.items.filter(item => {
+            return item.productId.toString() !== prodId;
+         });
+                  
+         return await getDB().collection('users').updateOne(
+            {_id: this._id},
+            { $set: { cart: { items: updatedItems } } }
+         );
+         
+      } catch (err) {
+         console.log(err);
+      }   
    }
 } 
