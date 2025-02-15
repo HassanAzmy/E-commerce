@@ -53,15 +53,18 @@ export default class User {
    }
 
    async getCart() {
-      const cartItems = this.cart.items;
-      const products = [];
-      for (let item of cartItems) {
-         const product = await Product.findById(item.productId);
-         products.push({
+      const productsIds = this.cart.items.map(item => {
+         return item.productId;
+      });
+
+      const products = await getDB().collection('products').find({_id: { $in: productsIds }}).toArray();
+      return products.map(product => {
+         return {
             ...product,
-            quantity: item.quantity
-         })
-      }
-      return products;
+            quantity: this.cart.items.find(item => {
+               return item.productId.toString() === product._id.toString();
+            }).quantity
+         }
+      });
    }
 } 
