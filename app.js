@@ -12,8 +12,11 @@ import { log } from 'console';
 
 const app = express();
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = dirname(__filename);
+
+const __filename = import.meta.filename;
+const __dirname = import.meta.dirname;
 
 app.set('view engine', 'ejs');
 app.set('views', 'views');

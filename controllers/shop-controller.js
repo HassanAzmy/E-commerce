@@ -40,8 +40,7 @@ export async function postDeletFromCart (req, res) {
 /** @param {express.Request} req */
 export async function getOrders (req, res, next) {
     try {
-        //* eager loading
-        const orders = await req.user.getOrders({include: Product});
+        const orders = await req.user.getOrder();
         res.render('shop/orders', {
             orders,
             pageTitle: 'Orders'
@@ -53,18 +52,9 @@ export async function getOrders (req, res, next) {
 
 /** @param {express.Request} req */
 export async function postOrder (req, res, next) {
-    try {
-        const cart = await req.user.getCart();
-        const products = await cart.getProducts();
-        const order = await req.user.createOrder();
-        const queryRes = await order.addProducts(products.map(product => {
-            product.orderItem = {
-                quantity: product.cartItem.quantity
-            };
-            return product;
-        }));
-        const removalFromCart = await cart.setProducts(null);
-        res.redirect('/orders');
+    try {        
+        const order = await req.user.addOrder();        
+        res.redirect('/cart');
     } catch (err) {
         console.log(err);
     };

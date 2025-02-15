@@ -60,10 +60,9 @@ export default class Product {
       }
    }
 
-   static async delete(prodId) {
+   static async deleteById(prodId) {
       try {
          const db = getDB();
-
          const queryRes = await db.collection('products').deleteOne({ _id: new mongodb.ObjectId(`${prodId}`)});
          return queryRes;
       } catch (err) {

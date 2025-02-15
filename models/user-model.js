@@ -58,7 +58,7 @@ export default class User {
             return item.productId;
          });
 
-         const products = await getDB().collection('products').find({_id: { $in: productsIds }}).toArray();
+         const products = await getDB().collection('products').find({_id: { $in: productsIds }}).toArray();         
          return products.map(product => {
             return {
                ...product,
@@ -68,7 +68,7 @@ export default class User {
             }
          });
       } catch(err) {
-         console.log(err);         
+         console.log(err);
       }
    }
 
@@ -81,10 +81,33 @@ export default class User {
          return await getDB().collection('users').updateOne(
             {_id: this._id},
             { $set: { cart: { items: updatedItems } } }
-         );
-         
+         );         
       } catch (err) {
          console.log(err);
       }   
+   }
+
+   async addOrder() {
+      const cartProducts = await this.getCart();
+      const productsWithoutUserId = cartProducts.map(({userId, ...rest}) => rest);
+      console.log(productsWithoutUserId);      
+      const order = {
+         products: productsWithoutUserId,
+         user: {
+            _id: this._id,
+            username: this.username
+         }
+      };
+      const queryRes = await getDB().collection('orders').insertOne(order);
+
+      this.cart.items = [];
+      return await getDB().collection('users').updateOne(
+         {_id: this._id},
+         {$set: {cart : {items: []}}}
+      );
+   }
+
+   async getOrder() {
+      return await getDB().collection('orders').find({'user._id': this._id}).toArray();
    }
 } 

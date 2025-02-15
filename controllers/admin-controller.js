@@ -66,7 +66,7 @@ export async function postEditProduct (req, res, next) {
       const updatedPrice = requestBody.price;
       const updatedDescription = requestBody.description;
       const productId = requestBody.productId;
-      const newProduct = new Product(updatedTitle, updatedPrice, updatedDescription, updatedImageUrl);
+      const newProduct = new Product(updatedTitle, updatedPrice, updatedDescription, updatedImageUrl, req.user._id);
       newProduct.update(productId);
       console.log('A product has been updated');
       res.redirect('/admin/Products');
@@ -79,7 +79,10 @@ export async function postEditProduct (req, res, next) {
 export async function postDeleteProduct (req, res, next) {
    try {
       const productId = req.body.productId;
-      const queryRes = await Product.delete(productId);
+      const queryRes = await Product.deleteById(productId);      
+
+
+
       console.log('A product has been deleted');
       res.redirect('/admin/Products');
    } catch(err) {

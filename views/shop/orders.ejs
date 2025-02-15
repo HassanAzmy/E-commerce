@@ -3,19 +3,20 @@
 
 <head>
    <%- include('../includes/head') %>
+   <link rel="stylesheet" href="/css/orders.css">
 </head>
 
 <body>
    <%- include('../includes/navBar') %>
    <main>
       <%if(orders.length > 0) {%>
-         <ul>
+         <ul class="orders">
             <%orders.forEach(order => {%>
-               <li>
-                  <h1># <%=order.Id%></h1>
-                  <ul>
+               <li class="orders__item">
+                  <h2>Order - # <%=order._id%></h2>
+                  <ul class="orders__products">
                      <%order.products.forEach(product => {%>
-                        <li><%=product.title%> (<%=product.orderItem.quantity%>)</li>
+                        <li class="orders__products-item"><%=product.title%> (<%=product.quantity%>)</li>
                      <%});%>
                   </ul>
                </li>
