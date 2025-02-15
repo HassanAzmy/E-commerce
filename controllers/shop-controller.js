@@ -4,10 +4,9 @@ import Product from '../models/product-model.js';
 /** @param {express.Request} req */
 export async function getCartProducts (req, res, next) {
     try {
-        const cart = await req.user.getCart();
-        const products = await cart.getProducts();
+        const cartProducts = await req.user.getCart();
         res.render('shop/cart', {
-            products,
+            products: cartProducts,
             pageTitle: 'Cart'
         });
     } catch (err) {
@@ -21,28 +20,7 @@ export async function postAddToCart (req, res, next) {
         const prodId = req.body.productId;
         const product = await Product.findById(prodId);
         const queryRes = await req.user.addToCart(product);
-        console.log(queryRes);
-        res.redirect('/products');
-
-        // let newQuantity = 1;
-        // let product; 
-        // const cart = await req.user.getCart();
-        // const products = await cart.getProducts({ where: { Id: prodId } });
-        // const productIsExist = products.length > 0;
-        // if (productIsExist) {
-        //     product = products[0];
-        //     const oldQuantity = product.cartItem.quantity;            
-        //     newQuantity = oldQuantity + 1;
-        // }
-        // else {        
-        //     product = await Product.findByPk(prodId);
-        // }
-        // const queryRes = await cart.addProduct(product, {
-        //     through: {
-        //         quantity: newQuantity
-        //     }
-        // });        
-        // res.redirect('/cart');
+        res.redirect('/cart');
     } catch (err) {
         console.log(err);
     };

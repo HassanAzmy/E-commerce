@@ -1,5 +1,6 @@
 import mongodb from 'mongodb'
 import {getDB} from '../utility/database.js'
+import Product from './product-model.js'
 
 export default class User {
    constructor(username, email, cart, Id) {
@@ -17,16 +18,23 @@ export default class User {
       }
    }
 
+   static async findById(userId) {
+      try {
+         return await getDB().collection('users').findOne({ _id: new mongodb.ObjectId(`${userId}`) });
+      } catch (err) {
+         console.log(err);
+      }
+   }
+
    async addToCart(product) {
       try {         
-         const productIndex = this.cart.items.findIndex(item => {                    
+         const productIndex = this.cart.items.findIndex(item => {                                            
             return item.productId.toString() === product._id.toString();
          });
 
          const updatedCartItems = [...this.cart.items];
-
-         const isFound = productIndex !== -1;
-         if (isFound) {            
+         const isProductFound = productIndex !== -1;
+         if (isProductFound) {            
             updatedCartItems[productIndex].quantity += 1 ;
          } else {
             updatedCartItems.push({
@@ -44,11 +52,16 @@ export default class User {
       }
    }
 
-   static async findById(userId) {
-      try {
-         return await getDB().collection('users').findOne({ _id: new mongodb.ObjectId(`${userId}`)});
-      } catch (err) {
-         console.log(err);         
+   async getCart() {
+      const cartItems = this.cart.items;
+      const products = [];
+      for (let item of cartItems) {
+         const product = await Product.findById(item.productId);
+         products.push({
+            ...product,
+            quantity: item.quantity
+         })
       }
+      return products;
    }
 } 
