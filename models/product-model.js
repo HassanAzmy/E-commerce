@@ -1,72 +1,99 @@
-import {getDB} from '../utility/database.js'
-import mongodb from 'mongodb';
+// import {getDB} from '../utility/database.js'
+// import mongodb from 'mongodb';
 
-export default class Product {
-   constructor(title, price, description, imageUrl, userId) {
-      this.title = title;
-      this.price = price;
-      this.description = description;
-      this.imageUrl = imageUrl;
-      this.userId = new mongodb.ObjectId(`${userId}`);
+import mongoose from "mongoose";
+
+const Schema = mongoose.Schema;
+
+const productSchema = new Schema({
+   // title: String,
+   title: {
+      type: String,
+      required: true
+   },
+   price: {
+      type: Number,
+      required: true      
+   },
+   description: {
+      type: String,
+      required: true
+   },
+   imageUrl: {
+      type: String,
+      required: true
    }
+});
 
-   async save() {
-      try {
-         const db = getDB();
+//* To be used for creating a product objects
+export default mongoose.model('Product', productSchema);
 
-         //* Similar to tables in SQL
-         const queryRes = await db.collection('products').insertOne(this);
-         return queryRes;
-      } catch(err) {
-         console.log(err);         
-      }
-   }
+// export default class Product {
+//    constructor(title, price, description, imageUrl, userId) {
+//       this.title = title;
+//       this.price = price;
+//       this.description = description;
+//       this.imageUrl = imageUrl;
+//       this.userId = new mongodb.ObjectId(`${userId}`);
+//    }
 
-   static async fetchAll() {
-      const db = getDB();
+//    async save() {
+//       try {
+//          const db = getDB();
 
-      //* we can add a filter
-      // return db.collection('products').find({title: ' });
+//          //* Similar to tables in SQL
+//          const queryRes = await db.collection('products').insertOne(this);
+//          return queryRes;
+//       } catch(err) {
+//          console.log(err);         
+//       }
+//    }
 
-      //* find() return a cursor which is a pointer to the result set of the query, so we convert it to an array
-      const products = await db.collection('products').find().toArray();
-      return products;
-   }
+//    static async fetchAll() {
+//       const db = getDB();
 
-   static async findById(prodId) {
-      try {
-         const db = getDB();
+//       //* we can add a filter
+//       // return db.collection('products').find({title: ' });
 
-         //* mongodb creates the (_id) of type ObjectId which is not defined in JS. So we have to cast it
-         //* if we use find() we have to use .next() to retrieve the next document from the cursor
-         const product = await db.collection('products').findOne({_id: new mongodb.ObjectId(`${prodId}`)});
-         return product;
-      } catch(err) {
-         throw err;
-      }
-   }
+//       //* find() return a cursor which is a pointer to the result set of the query, so we convert it to an array
+//       const products = await db.collection('products').find().toArray();
+//       return products;
+//    }
 
-   async update(prodId) {
-      try {
-         const db = getDB();
+//    static async findById(prodId) {
+//       try {
+//          const db = getDB();
 
-         const queryRes = await db.collection('products').updateOne(
-            {_id: new mongodb.ObjectId(`${prodId}`)}, 
-            { $set: this }
-         );
-         return queryRes;
-      } catch(err) {
-         throw err;
-      }
-   }
+//          //* mongodb creates the (_id) of type ObjectId which is not defined in JS. So we have to cast it
+//          //* if we use find() we have to use .next() to retrieve the next document from the cursor
+//          const product = await db.collection('products').findOne({_id: new mongodb.ObjectId(`${prodId}`)});
+//          return product;
+//       } catch(err) {
+//          throw err;
+//       }
+//    }
 
-   static async deleteById(prodId) {
-      try {
-         const db = getDB();
-         const queryRes = await db.collection('products').deleteOne({ _id: new mongodb.ObjectId(`${prodId}`)});
-         return queryRes;
-      } catch (err) {
-         throw err;
-      }
-   }
-}
+//    async update(prodId) {
+//       try {
+//          const db = getDB();
+
+//          const queryRes = await db.collection('products').updateOne(
+//             {_id: new mongodb.ObjectId(`${prodId}`)}, 
+//             { $set: this }
+//          );
+//          return queryRes;
+//       } catch(err) {
+//          throw err;
+//       }
+//    }
+
+//    static async deleteById(prodId) {
+//       try {
+//          const db = getDB();
+//          const queryRes = await db.collection('products').deleteOne({ _id: new mongodb.ObjectId(`${prodId}`)});
+//          return queryRes;
+//       } catch (err) {
+//          throw err;
+//       }
+//    }
+// }

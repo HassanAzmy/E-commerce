@@ -4,7 +4,8 @@ import express from 'express';
 /** @param {express.Request} req */
 export async function getProducts (req, res, next) {
    try {
-      const products = await Product.fetchAll();
+      //* Unlike mongo which gave us a cursor, it gives us the product itself
+      const products = await Product.find();
       res.render('shop/product-list', {
          prods: products,
          pageTitle: 'Products'
@@ -18,7 +19,8 @@ export async function getProducts (req, res, next) {
 /** @param {express.Request} req */
 export async function getIndex(req, res, next) {
    try {
-      const products = await Product.fetchAll();
+      //* Unlike mongo which gave us a cursor, it gives us the product itself
+      const products = await Product.find();
       res.render('shop/index', {
          prods: products,
          pageTitle: 'Shop'
